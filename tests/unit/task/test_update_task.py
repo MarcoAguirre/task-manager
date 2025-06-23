@@ -4,6 +4,7 @@ from uuid import uuid4
 from datetime import datetime
 from unittest.mock import MagicMock
 
+
 def test_update_task_sets_updated_at():
     repo = MagicMock()
     repo.update.side_effect = lambda t: t
@@ -16,7 +17,7 @@ def test_update_task_sets_updated_at():
         priority=TaskPriority.medium,
         created_at=datetime.now(),
         updated_at=datetime.now(),
-        task_list_id=uuid4()
+        task_list_id=uuid4(),
     )
 
     usecase = UpdateTaskUseCase(repo)

@@ -3,6 +3,7 @@ from domain.repositories.task_list import TaskListRepository
 from uuid import uuid4
 from datetime import datetime
 
+
 class CreateTaskListUseCase:
     def __init__(self, repository: TaskListRepository):
         self.repository = repository
@@ -13,6 +14,6 @@ class CreateTaskListUseCase:
             name=name,
             description=description,
             created_at=datetime.now(),
-            updated_at=datetime.now()
+            updated_at=datetime.now(),
         )
         return self.repository.create(task_list)
