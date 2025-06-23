@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.routers import task_list
+from app.routers import task_list, tasks
 
 from infrastructure.db.base import Base
 from infrastructure.db.session import engine
@@ -7,6 +7,7 @@ from infrastructure.db import models
 
 app = FastAPI()
 app.include_router(task_list.router)
+app.include_router(tasks.router)
 
 @app.get("/")
 def read_root():
