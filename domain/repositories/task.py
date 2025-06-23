@@ -3,6 +3,7 @@ from typing import List, Optional
 from uuid import UUID
 from domain.models.task import Task
 
+
 class TaskRepository(ABC):
 
     @abstractmethod

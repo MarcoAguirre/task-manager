@@ -1,5 +1,4 @@
 from sqlalchemy import Column, String, Enum, DateTime, ForeignKey
-from sqlalchemy.dialects.postgresql import UUID as SQLUUID
 from sqlalchemy.orm import relationship
 from datetime import datetime
 import uuid
@@ -7,15 +6,18 @@ import uuid
 from infrastructure.db.base import Base
 import enum
 
+
 class TaskStatus(str, enum.Enum):
     pending = "pending"
     in_progress = "in_progress"
     completed = "completed"
 
+
 class TaskPriority(str, enum.Enum):
     low = "low"
     medium = "medium"
     high = "high"
+
 
 class TaskListORM(Base):
     __tablename__ = "task_lists"

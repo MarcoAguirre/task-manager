@@ -9,6 +9,7 @@ from uuid import UUID
 
 router = APIRouter(prefix="/tasks", tags=["Tasks"])
 
+
 @router.get("/{task_id}", response_model=TaskResponse)
 def get_task(task_id: UUID):
     repo = SqlAlchemyTaskRepository()
@@ -16,6 +17,7 @@ def get_task(task_id: UUID):
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
     return TaskResponse(**task.model_dump())
+
 
 @router.post("/", response_model=TaskResponse, status_code=status.HTTP_201_CREATED)
 def create_task(payload: TaskCreate):
@@ -29,6 +31,7 @@ def create_task(payload: TaskCreate):
     )
     return TaskResponse(**task.model_dump())
 
+
 @router.put("/{task_id}", response_model=TaskResponse)
 def update_task(task_id: UUID, payload: TaskUpdate):
     repo = SqlAlchemyTaskRepository()
@@ -40,6 +43,7 @@ def update_task(task_id: UUID, payload: TaskUpdate):
     usecase = UpdateTaskUseCase(repo)
     result = usecase.execute(updated)
     return TaskResponse(**result.model_dump())
+
 
 @router.delete("/{task_id}", status_code=204)
 def delete_task(task_id: UUID):

@@ -2,6 +2,7 @@ from domain.models.task_list import TaskList
 from domain.repositories.task_list import TaskListRepository
 from datetime import datetime
 
+
 class UpdateTaskListUseCase:
     def __init__(self, repository: TaskListRepository):
         self.repository = repository

@@ -1,6 +1,7 @@
 from domain.repositories.task import TaskRepository
 from uuid import UUID
 
+
 class DeleteTaskUseCase:
     def __init__(self, repository: TaskRepository):
         self.repository = repository

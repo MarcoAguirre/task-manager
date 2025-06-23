@@ -16,7 +16,11 @@ class SqlAlchemyTaskListRepository(TaskListRepository):
         self.session = session or SessionLocal()
 
     def get_by_id(self, task_list_id: UUID) -> Optional[TaskList]:
-        orm_task_list = self.session.query(TaskListORM).filter(TaskListORM.id == str(task_list_id)).first()
+        orm_task_list = (
+            self.session.query(TaskListORM)
+            .filter(TaskListORM.id == str(task_list_id))
+            .first()
+        )
         return self._to_domain(orm_task_list) if orm_task_list else None
 
     def get_all_task_lists(self) -> List[TaskList]:
@@ -37,7 +41,11 @@ class SqlAlchemyTaskListRepository(TaskListRepository):
         return self._to_domain(orm_task_list_obj)
 
     def update(self, task_list: TaskList) -> TaskList:
-        orm_task_list_obj = self.session.query(TaskListORM).filter(TaskListORM.id == str(task_list.id)).first()
+        orm_task_list_obj = (
+            self.session.query(TaskListORM)
+            .filter(TaskListORM.id == str(task_list.id))
+            .first()
+        )
         if not orm_task_list_obj:
             raise ValueError("Task list not found")
 
@@ -50,7 +58,11 @@ class SqlAlchemyTaskListRepository(TaskListRepository):
         return self._to_domain(orm_task_list_obj)
 
     def delete(self, task_list_id: UUID) -> None:
-        orm_task_list_obj = self.session.query(TaskListORM).filter(TaskListORM.id == str(task_list_id)).first()
+        orm_task_list_obj = (
+            self.session.query(TaskListORM)
+            .filter(TaskListORM.id == str(task_list_id))
+            .first()
+        )
         if orm_task_list_obj:
             self.session.delete(orm_task_list_obj)
             self.session.commit()
@@ -61,5 +73,5 @@ class SqlAlchemyTaskListRepository(TaskListRepository):
             name=task_list_from_orm.name,
             description=task_list_from_orm.description,
             created_at=task_list_from_orm.created_at,
-            updated_at=task_list_from_orm.updated_at
+            updated_at=task_list_from_orm.updated_at,
         )

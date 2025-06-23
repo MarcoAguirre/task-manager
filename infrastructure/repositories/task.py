@@ -15,11 +15,17 @@ class SqlAlchemyTaskRepository(TaskRepository):
         self.session = session or SessionLocal()
 
     def get_by_id(self, task_id: UUID) -> Optional[Task]:
-        orm_task = self.session.query(TaskORM).filter(TaskORM.id == str(task_id)).first()
+        orm_task = (
+            self.session.query(TaskORM).filter(TaskORM.id == str(task_id)).first()
+        )
         return self._to_domain(orm_task) if orm_task else None
 
     def list_by_task_list(self, task_list_id: UUID) -> List[Task]:
-        orm_task_list = self.session.query(TaskORM).filter(TaskORM.task_list_id == str(task_list_id)).all()
+        orm_task_list = (
+            self.session.query(TaskORM)
+            .filter(TaskORM.task_list_id == str(task_list_id))
+            .all()
+        )
         return [self._to_domain(orm) for orm in orm_task_list]
 
     def create(self, task: Task) -> Task:
@@ -31,7 +37,7 @@ class SqlAlchemyTaskRepository(TaskRepository):
             priority=task.priority,
             created_at=task.created_at,
             updated_at=task.updated_at,
-            task_list_id=str(task.task_list_id)
+            task_list_id=str(task.task_list_id),
         )
         self.session.add(orm_task_obj)
         self.session.commit()
@@ -39,7 +45,9 @@ class SqlAlchemyTaskRepository(TaskRepository):
         return self._to_domain(orm_task_obj)
 
     def update(self, task: Task) -> Task:
-        orm_task_obj = self.session.query(TaskORM).filter(TaskORM.id == str(task.id)).first()
+        orm_task_obj = (
+            self.session.query(TaskORM).filter(TaskORM.id == str(task.id)).first()
+        )
         if not orm_task_obj:
             raise ValueError("Task not found")
         orm_task_obj.title = task.title
@@ -52,13 +60,16 @@ class SqlAlchemyTaskRepository(TaskRepository):
         return self._to_domain(orm_task_obj)
 
     def delete(self, task_id: UUID) -> None:
-        orm_task_obj = self.session.query(TaskORM).filter(TaskORM.id == str(task_id)).first()
+        orm_task_obj = (
+            self.session.query(TaskORM).filter(TaskORM.id == str(task_id)).first()
+        )
         if orm_task_obj:
             self.session.delete(orm_task_obj)
             self.session.commit()
 
     def _to_domain(self, orm: TaskORM) -> Task:
         from uuid import UUID
+
         return Task(
             id=UUID(orm.id),
             title=orm.title,
@@ -67,5 +78,5 @@ class SqlAlchemyTaskRepository(TaskRepository):
             priority=orm.priority,
             created_at=orm.created_at,
             updated_at=orm.updated_at,
-            task_list_id=UUID(orm.task_list_id)
+            task_list_id=UUID(orm.task_list_id),
         )

@@ -23,6 +23,6 @@ class CreateTaskUseCase:
             priority=priority,
             task_list_id=task_list_id,
             created_at=datetime.utcnow(),
-            updated_at=datetime.utcnow()
+            updated_at=datetime.utcnow(),
         )
         return self.repository.create(task)

@@ -1,7 +1,8 @@
 from pydantic import BaseModel, Field
 from uuid import UUID, uuid4
 from datetime import datetime
-from typing import List, Optional
+from typing import Optional
+
 
 class TaskList(BaseModel):
     id: UUID = Field(default_factory=uuid4)
