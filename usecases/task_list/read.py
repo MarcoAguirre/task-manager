@@ -21,13 +21,13 @@ class GetFilteredTasksWithProgressUseCase:
         all_tasks = self.repository.list_by_task_list(task_list_id)
 
         filtered = [
-            t for t in all_tasks
-            if (not status or t.status == status)
-            and (not priority or t.priority == priority)
+            task for task in all_tasks
+            if (not status or task.status == status)
+            and (not priority or task.priority == priority)
         ]
 
         total = len(all_tasks)
-        completed = len([t for t in all_tasks if t.status == TaskStatus.completed])
+        completed = len([task for task in all_tasks if task.status == TaskStatus.completed])
         percentage = int((completed / total) * 100) if total > 0 else 0
 
         return FilteredTasksWithProgressResult(tasks=filtered, completion_percentage=percentage)
